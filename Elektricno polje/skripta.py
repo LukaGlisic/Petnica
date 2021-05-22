@@ -1,31 +1,22 @@
-import pygame
-import random
 
-pygame.init()
-pygame.font.init()
+import matplotlib 
+from numpy import *
+from pylab import *
+from fileinput import input
 
-screen_width = 500
-screen_height = screen_width
+x=linspace(-2, 2, 32)
+y=linspace(-1.5, 1.5, 24)
+x, y=meshgrid(x, y)
 
-screen = pygame.display.set_mode((screen_width,screen_height))
-pygame.display.set_caption("Elektricno polje")
-
-def drawGrid():
-    grid_list = []
-    blockSize = 50
-    for x in range(screen_width):
-        for y in range(screen_height):
-            rect = pygame.Rect(x*blockSize, y*blockSize, blockSize, blockSize)
-            pygame.draw.rect(screen, (255,255,255), rect, 1)
-
-running = True
-while running:
-    screen.fill((0,0,0))
-    drawGrid()
-    krug1 = pygame.draw.circle(screen, pygame.Color("red"), (300, 300), 50)
-    pygame.draw.circle(screen, pygame.Color("red"), (100, 100), 50)
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            running = False
-
-    pygame.display.update()
+ 
+def E(q, a, x, y):
+    return q*(x-a[0])/((x-a[0])**2+(y-a[1])**2)**(1.5), \
+        q*(y-a[1])/((x-a[0])**2+(y-a[1])**2)**(1.5)
+ 
+# racunjanje vektora
+Ex1, Ey1=E(2, [-1, 0], x, y)
+Ex2, Ey2=E(5, [1, 0], x, y)
+Ex=Ex1+Ex2
+Ey=Ey1+Ey2
+quiver(x, y, Ex, Ey, pivot='middle', headwidth=4, headlength=6)
+show()
